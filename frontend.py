@@ -20,7 +20,28 @@ class MainWindow(QMainWindow):
     
     # a function to add objects and necessary UI objects to make a UI
     def initUI(self):
+        
+        # a central container to ensure the responsiveness of the windowand holding the elements
         central_widget = QWidget(self)
+        self.setCentralWidget(central_widget) # inializing the container as main container to hold QMainWindow items
+        
+        # main layout to carry all the elements in the window
+        main_layout = QVBoxLayout(central_widget)
+        
+        # adding a title label to the window
+        title_label =  QLabel("Project1 - Sorting Algorithms",self) # setting the label text
+        title_label.setFont(QFont("Times New Romans",30)) # setting the text font and size
+        title_label.setFixedHeight(80) # fixing the height of the label
+        title_label.setAlignment(Qt.AlignCenter) # fixing the alignment of the label
+        title_label.setStyleSheet("color: black;background-color: grey;font-weight: bold;") # adding a stylesheet for the label
+
+        # making a child container for the label
+        label_container = QVBoxLayout()
+        label_container.addWidget(title_label) # adding the label to the vertical box layout
+        
+        # adding the child vertical layout for the label to the main layout
+        main_layout.addLayout(label_container)
+        
         
     
     
