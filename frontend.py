@@ -33,6 +33,8 @@ class MainWindow(QMainWindow):
     # ------------------------------------- UI function -------------------------------------
     def initUI(self):
         
+        headers = ["A","B","C","D","E","F","G"]
+        
         # ------------------------------------- Basic setup -------------------------------------
         
         central_widget = QWidget(self) # a central container to ensure the responsiveness of the window and holding the elements
@@ -108,23 +110,34 @@ class MainWindow(QMainWindow):
         
         data_table = QTableWidget() # a new table layout
         data_table.setColumnCount(7) # setting the column count for the table
-        data_table.setHorizontalHeaderLabels(["Attribute 1", "Attribute 2", "Attribute 3", "Attribute 4", 
-             "Attribute 5", "Attribute 6", "Attribute 7"])
+        data_table.setHorizontalHeaderLabels(headers)
         
+        # setting the column width to automatically adjust equally
         table_header = data_table.horizontalHeader()
         table_header.setSectionResizeMode(QHeaderView.Stretch)
         
-         
+        # ------------------------------------- Single sort layout -------------------------------------
+
+        single_column_sort_label = QLabel("Sort data by column: ") # label text for the sort
+        single_column_sort_combobox = QComboBox() # adding a combobox to select a column
+        single_column_sort_combobox.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        single_column_sort_btn = QPushButton("Single Sort") # adding a button for single sort triggering
+        
+        single_column_sort_container = QHBoxLayout()
+        single_column_sort_container.addWidget(single_column_sort_label)
+        single_column_sort_container.addWidget(single_column_sort_combobox)
+        single_column_sort_container.addWidget(single_column_sort_btn)
+        
         # ------------------------------------- Adding layouts to main layout -------------------------------------
         
         main_layout.addLayout(title_container)
         main_layout.addLayout(scrap_data_container)
         main_layout.addWidget(data_table)
-        
+        main_layout.addLayout(single_column_sort_container)
         
     
     
-         
+# a main function to 
 def main():
     app = QApplication(sys.argv)
     window =  MainWindow()
