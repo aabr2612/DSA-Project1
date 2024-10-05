@@ -51,10 +51,10 @@ class MainWindow(QMainWindow):
 
         # ------------------------------------- Scraping URL input -------------------------------------
         
-        data_scrap_url = QLineEdit()
-        data_scrap_url.setPlaceholderText("Enter a valid URL to scrap data")
-        data_scrap_url.setStyleSheet("color: black; background-color: white; font-size: 14px;")
-        data_scrap_url.setFixedWidth(400)
+        data_scrap_url = QLineEdit() # adding a text input in UI
+        data_scrap_url.setPlaceholderText("Enter a valid URL to scrap data") # setting up a place holder for user guidance
+        data_scrap_url.setStyleSheet("color: black; background-color: white; font-size: 14px;") # setting the stylesheet for the url input
+        data_scrap_url.setMinimumWidth(400) # setting the minimum width of the url input field
         
         # ------------------------------------- Scraping buttons layout -------------------------------------
 
@@ -81,53 +81,45 @@ class MainWindow(QMainWindow):
         stop_scrap_btn.setStyleSheet(buttons_stylesheet+"background-color: red;")
         # stop_scrap_btn.clicked.connect(self.stop_scrap_data)
         
-        # ------------------------------------- Setting up the URL and buttons in layout -------------------------------------
+        # ------------------------------------- Progress bar for scraping task -------------------------------------
+        
+        scrap_progress = QProgressBar()
+        scrap_progress.setValue(0)
+        scrap_progress.setTextVisible(True)
+        
+        # ------------------------------------- Setting up the scraping elements in layout -------------------------------------
+        
+        scrap_data_container = QVBoxLayout() # a main layout holder for the scraping task UI
         
         # a container to hold the url input, progress bar and buttons in the window
         scrapping_functionality_container = QHBoxLayout()
-        scrapping_functionality_container.addStretch(1)
         scrapping_functionality_container.addWidget(data_scrap_url)
         scrapping_functionality_container.addWidget(start_scrap_btn)
         scrapping_functionality_container.addWidget(pause_scrap_btn)
         scrapping_functionality_container.addWidget(resume_scrap_btn)
         scrapping_functionality_container.addWidget(stop_scrap_btn)
-        scrapping_functionality_container.addStretch(1)
         
+        # adding the elements to the main scraping UI container
         
+        scrap_data_container.addLayout(scrapping_functionality_container)
+        scrap_data_container.addWidget(scrap_progress)
         
+        # ------------------------------------- Adding the data table to the UI -------------------------------------
         
+        data_table = QTableWidget() # a new table layout
+        data_table.setColumnCount(7) # setting the column count for the table
+        data_table.setHorizontalHeaderLabels(["Attribute 1", "Attribute 2", "Attribute 3", "Attribute 4", 
+             "Attribute 5", "Attribute 6", "Attribute 7"])
         
+        table_header = data_table.horizontalHeader()
+        table_header.setSectionResizeMode(QHeaderView.Stretch)
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+         
         # ------------------------------------- Adding layouts to main layout -------------------------------------
         
         main_layout.addLayout(title_container)
-        main_layout.addLayout(scrapping_functionality_container)
+        main_layout.addLayout(scrap_data_container)
+        main_layout.addWidget(data_table)
         
         
     
