@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(win_width,win_height)
         
         # setting some stylesheet for the window
-        self.setStyleSheet("background-color: grey; font-family: Times New Roman;")
+        self.setStyleSheet("background-color: black; font-family: Times New Roman;")
         
         # calling an initalizer function to add objects to the form
         self.initUI()
@@ -55,32 +55,32 @@ class MainWindow(QMainWindow):
         
         data_scrap_url = QLineEdit() # adding a text input in UI
         data_scrap_url.setPlaceholderText("Enter a valid URL to scrap data") # setting up a place holder for user guidance
-        data_scrap_url.setStyleSheet("color: black; background-color: white; font-size: 14px;") # setting the stylesheet for the url input
+        data_scrap_url.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the url input
         data_scrap_url.setMinimumWidth(400) # setting the minimum width of the url input field
         
         # ------------------------------------- Scraping buttons layout -------------------------------------
 
         # common stylesheet for the buttons in the UI
-        buttons_stylesheet = "color:black; font-weight:bold; font-size: 14px;"
+        buttons_stylesheet = "color:black; font-weight:bold; font-size: 14px; background-color:"
         
         # start button
         start_scrap_btn = QPushButton("Start")
-        start_scrap_btn.setStyleSheet(buttons_stylesheet+"background-color: green;")
+        start_scrap_btn.setStyleSheet(buttons_stylesheet+" green;")
         # start_scrap_btn.clicked.connect(self.start_scrap_data)
         
         # pause button
         pause_scrap_btn = QPushButton("Pause")
-        pause_scrap_btn.setStyleSheet(buttons_stylesheet+"background-color: yellow;")
+        pause_scrap_btn.setStyleSheet(buttons_stylesheet+" yellow;")
         # resume_scrap_btn.clicked.connect(self.pause_scrap_data)
 
         # resume button
         resume_scrap_btn = QPushButton("Resume")
-        resume_scrap_btn.setStyleSheet(buttons_stylesheet+"background-color: blue;")
+        resume_scrap_btn.setStyleSheet(buttons_stylesheet+" blue;")
         # resume_scrap_btn.clicked.connect(self.resume_scrap_data)
         
         # stop button
         stop_scrap_btn = QPushButton("Stop")
-        stop_scrap_btn.setStyleSheet(buttons_stylesheet+"background-color: red;")
+        stop_scrap_btn.setStyleSheet(buttons_stylesheet+" red;")
         # stop_scrap_btn.clicked.connect(self.stop_scrap_data)
         
         # ------------------------------------- Progress bar for scraping task -------------------------------------
@@ -88,6 +88,7 @@ class MainWindow(QMainWindow):
         scrap_progress = QProgressBar()
         scrap_progress.setValue(0)
         scrap_progress.setTextVisible(True)
+        scrap_progress.setStyleSheet("color: white;")
         
         # ------------------------------------- Setting up the scraping elements in layout -------------------------------------
         
@@ -111,6 +112,19 @@ class MainWindow(QMainWindow):
         data_table = QTableWidget() # a new table layout
         data_table.setColumnCount(7) # setting the column count for the table
         data_table.setHorizontalHeaderLabels(headers)
+        data_table.setStyleSheet("""
+            QTableWidget {
+                color: black;
+                background-color: lightgray;
+                font-size: 11px;
+            }
+            QTableWidget::item:nth-child(odd) {
+                background-color: #f0f0f0;
+            }
+            QTableWidget::item:nth-child(even) {
+                background-color: #d0d0d0;
+            }
+        """)
         
         # setting the column width to automatically adjust equally
         table_header = data_table.horizontalHeader()
@@ -119,10 +133,13 @@ class MainWindow(QMainWindow):
         # ------------------------------------- Single sort layout -------------------------------------
 
         single_column_sort_label = QLabel("Sort data by column: ") # label text for the sort
+        single_column_sort_label.setStyleSheet("color: black; background-color: lightgrey; font-weight: bold; font-size: 12px;") # adding a stylesheet for the label
         single_column_sort_combobox = QComboBox() # adding a combobox to select a column
         single_column_sort_combobox.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
         single_column_sort_btn = QPushButton("Single Sort") # adding a button for single sort triggering
+        single_column_sort_btn.setStyleSheet(buttons_stylesheet+" lightgrey;") # adding style to button
         
+        # adding the elements to main sorting layout container
         single_column_sort_container = QHBoxLayout()
         single_column_sort_container.addWidget(single_column_sort_label)
         single_column_sort_container.addWidget(single_column_sort_combobox)
