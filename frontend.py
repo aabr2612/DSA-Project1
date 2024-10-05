@@ -9,7 +9,10 @@ class MainWindow(QMainWindow):
     # self initalizer
     def __init__(self):
         
-         # setting the geometry of the form
+        super().__init__() # an initializer allowing to make a window form
+        self.setWindowTitle("Project-1 Scraping and Data sorting") # setting the window title
+        
+        # setting the geometry of the form
         win_width = 900 # inital width of the form
         win_height = 690 # initial height of the form
         screen = QApplication.primaryScreen() # getting the size of the screen
@@ -42,8 +45,37 @@ class MainWindow(QMainWindow):
         
         # ------------------------------------- Scraping buttons layout -------------------------------------
 
-        # adding the title container to the main layout
+        # start button
+        start_scrap_btn = QPushButton("Start")
+        start_scrap_btn.setStyleSheet("color: white;background-color: green;")
+        # start_scrap_btn.clicked.connect(self.start_scrap_data)
+        
+        # pause button
+        pause_scrap_btn = QPushButton("Pause")
+        pause_scrap_btn.setStyleSheet("color: white;background-color: yellow;")
+        # resume_scrap_btn.clicked.connect(self.pause_scrap_data)
+
+        # resume button
+        resume_scrap_btn = QPushButton("Resume")
+        resume_scrap_btn.setStyleSheet("color: white;background-color: blue;")
+        # resume_scrap_btn.clicked.connect(self.resume_scrap_data)
+        
+        # stop button
+        stop_scrap_btn = QPushButton("Stop")
+        stop_scrap_btn.setStyleSheet("color: white;background-color: red;")
+        # stop_scrap_btn.clicked.connect(self.stop_scrap_data)
+        
+        # a buttons container to hold the buttons in the window
+        buttons_container = QHBoxLayout()
+        buttons_container.addWidget(start_scrap_btn)
+        buttons_container.addWidget(pause_scrap_btn)
+        buttons_container.addWidget(resume_scrap_btn)
+        buttons_container.addWidget(stop_scrap_btn)
+        
+        # ------------------------------------- Adding layouts to main layout -------------------------------------
+        
         main_layout.addLayout(title_container)
+        main_layout.addLayout(buttons_container)
         
         
     
