@@ -1,31 +1,34 @@
 import sys
+import time
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5.QtCore import Qt
 
 # a main class inheriting from the QMainWindow so that it can access elements
 class MainWindow(QMainWindow):
     # self initalizer
     def __init__(self):
         
-        # setting up the initial window specifications
-        super().__init__() # an initializer of the parent class to ensure that it allows to create a window
-        
-        self.setWindowTitle("Project1: Sorting Algorithms") # setting the windows title
+         # setting the geometry of the form
+        win_width = 900 # inital width of the form
+        win_height = 690 # initial height of the form
         screen = QApplication.primaryScreen() # getting the size of the screen
-        init_x_posi = (screen.geometry().width()-900)//2 # setting the initial x position of the window
-        self.setGeometry(init_x_posi,30,900,690) # setting the initial geometry of the window
+        init_x_position = (screen.geometry().width() - win_width) // 2 # setting the initial start position for the x-axis to ensure that it is in mid
+        init_y_position = 30 # setting the initial start position for the y-axis
+        self.setGeometry(init_x_position, init_y_position, win_width, win_height) # setting the initial size and axis of the for
         
-        self.initUI() # calling the init function to add objects to the UI window
+        # calling an initalizer function to add objects to the form
+        self.initUI()
     
     # a function to add objects and necessary UI objects to make a UI
     def initUI(self):
         
         # a central container to ensure the responsiveness of the windowand holding the elements
         central_widget = QWidget(self)
-        self.setCentralWidget(central_widget) # inializing the container as main container to hold QMainWindow items
+        # setting the central widget of the window
+        self.setCentralWidget(central_widget)
         
-        # main layout to carry all the elements in the window
+        # main layout to hold all the elements to be added to the UI
         main_layout = QVBoxLayout(central_widget)
         
         # adding a title label to the window
@@ -35,12 +38,12 @@ class MainWindow(QMainWindow):
         title_label.setAlignment(Qt.AlignCenter) # fixing the alignment of the label
         title_label.setStyleSheet("color: black;background-color: grey;font-weight: bold;") # adding a stylesheet for the label
 
-        # making a child container for the label
-        label_container = QVBoxLayout()
-        label_container.addWidget(title_label) # adding the label to the vertical box layout
+        # title container to hold the label
+        title_container = QVBoxLayout()
+        title_container.addWidget(title_label) # adding label to the layout
         
-        # adding the child vertical layout for the label to the main layout
-        main_layout.addLayout(label_container)
+        # adding the title container to the main layout
+        main_layout.addLayout(title_container)
         
         
     
