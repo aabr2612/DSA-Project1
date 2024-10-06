@@ -167,7 +167,7 @@ def scrape_products():
         })
 
         # Check if the CSV file exists
-        file_path = f"./backend/Data/{ProductNameToBeSearched}.csv"
+        file_path = f"./backend/data/{ProductNameToBeSearched}.csv"
 
 
         if os.path.exists(file_path):
