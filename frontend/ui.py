@@ -231,10 +231,3 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(single_column_sort_container)
         main_layout.addLayout(multiple_column_sort_container)
         main_layout.addLayout(search_column_sort_container)
-        
-# a main function to 
-def main():
-    app = QApplication(sys.argv)
-    window =  MainWindow()
-    window.show()
-    sys.exit(app.exec_())
