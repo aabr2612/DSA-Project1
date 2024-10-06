@@ -112,24 +112,16 @@ class MainWindow(QMainWindow):
         self.and_checkbox = QCheckBox("AND")
         self.and_checkbox.setStyleSheet(common_stylesheet + "lightgrey;")
         self.and_checkbox.setFixedWidth(50)
-        self.or_checkbox = QCheckBox("OR")
-        self.or_checkbox.setStyleSheet(common_stylesheet + "lightgrey;")
-        self.or_checkbox.setFixedWidth(40)
-        self.search_column_input2 = QLineEdit()
-        self.search_column_input2.setPlaceholderText("Query column 2: ")
-        self.search_column_input2.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;")
-        
         search_column_container1 = QHBoxLayout()
         search_column_container1.addWidget(search_column_sort_label)
         search_column_container1.addWidget(self.filter_combobox)
         search_column_container1.addWidget(self.not_checkbox)
         search_column_container1.addWidget(self.search_column_input1)
-        search_column_container1.addWidget(self.and_checkbox)
-        search_column_container1.addWidget(self.or_checkbox)
-        search_column_container1.addWidget(self.search_column_input2)        
         
         self.search_column_btn = QPushButton("Search")
         self.search_column_btn.setStyleSheet(common_stylesheet + " lightgrey;")
+        self.search_column_btn.clicked.connect(self.apply_filter)
+
         
         search_column_container2 = QHBoxLayout()
         search_column_container2.addWidget(self.search_column_combobox)
@@ -213,3 +205,33 @@ class MainWindow(QMainWindow):
         for i in range(len(self.data)):
             for j in range(len(self.data.columns)):
                 self.data_table.setItem(i, j, QTableWidgetItem(str(self.data.iat[i, j])))
+    def apply_filter(self):
+        try:
+            if self.data is not None:
+                filter_type = self.filter_combobox.currentText()
+                column_name = self.search_column_combobox.currentText()
+                query = self.search_column_input1.text()
+                
+                if query.strip() == "":
+                    return
+                
+                filtered_data = self.data.copy()
+                
+                if filter_type == "Contains":
+                    filtered_data = filtered_data[filtered_data[column_name].str.contains(query, na=False)]
+                elif filter_type == "Ends with":
+                    filtered_data = filtered_data[filtered_data[column_name].str.endswith(query, na=False)]
+                elif filter_type == "Starts with":
+                    filtered_data = filtered_data[filtered_data[column_name].str.startswith(query, na=False)]
+                
+                if self.not_checkbox.isChecked():
+                    filtered_data = self.data[~self.data[column_name].isin(filtered_data[column_name])]
+
+                self.data_table.setRowCount(len(filtered_data))
+                for i in range(len(filtered_data)):
+                    for j in range(len(filtered_data.columns)):
+                        self.data_table.setItem(i, j, QTableWidgetItem(str(filtered_data.iat[i, j])))
+            else:
+                print("No data to filter.")
+        except Exception as e:
+            print("Error occurred during filtering: ", e)
