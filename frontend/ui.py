@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
         title_container = QVBoxLayout()
         title_container.addWidget(title_label)
 
-        common_stylesheet = "color:black; font-weight:bold; font-size: 14px;"
+        common_stylesheet = "color:black; font-weight:bold; font-size: 14px; background-color: white;"
 
         self.file_name_input = QLineEdit()
         self.file_name_input.setPlaceholderText("Enter file name to load data: ")
