@@ -3,6 +3,7 @@ import time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from frontend import utility as ut
 
 # a main class inheriting from the QMainWindow so that it can access elements
 class MainWindow(QMainWindow):
@@ -100,10 +101,10 @@ class MainWindow(QMainWindow):
         self.file_name_input.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
         self.file_name_input.setMinimumWidth(400) # setting the minimum width of the product name field
         
-        # start button
+        # load button
         self.load_from_csv_btn = QPushButton("Load data from CSV")
         self.load_from_csv_btn.setStyleSheet(common_stylesheet+" lightgrey;")
-        # self.start_scrap_btn.clicked.connect(self.time)
+        self.load_from_csv_btn.clicked.connect(self.load_data_from_csv)
         
         
         # ------------------------------------- Setting up the scraping elements and load data in layout -------------------------------------
@@ -266,3 +267,21 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(single_column_sort_container)
         main_layout.addLayout(multiple_column_sort_container)
         main_layout.addLayout(search_column_sort_container)
+
+    def load_data_from_csv(self):
+        try:
+            if(self.file_name_input.text()!=""):
+                file_name = self.file_name_input.text()
+                data = ut.load_data(f"{file_name}"+".csv")
+                self.headers = data.columns
+                self.data_table.setColumnCount(len(self.headers))
+                self.data_table.setHorizontalHeaderLabels(self.headers)
+                self.data_table.setRowCount(len(data))
+                for i in range(len(data)):
+                    for j in range(len(data[i])):
+                        self.data_table.setItem(i,j,QTableWidgetItem(str(data[i][j])))
+            else:
+                print("Please enter the file name")
+        except Exception as e:
+            print("Error occurred: ",e)
+            
