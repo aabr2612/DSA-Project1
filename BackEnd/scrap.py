@@ -37,8 +37,8 @@ def scrape_products():
     products, prices, ratings, watchers, product_countries, discounts = [], [], [], [], [], []
     shipping_prices, conditions, seller_names, seller_sold_products, seller_ratings = [], [], [], [], []
 
-    ProductNameToBeSearched = "water bottle"
-    total_pages = 1
+    ProductNameToBeSearched = "glasses"  # enterProduct name for searching
+    total_pages = 42
 
     try:
         for i in range(1, total_pages + 1):
