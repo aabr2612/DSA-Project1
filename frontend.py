@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(win_width,win_height)
         
         # setting some stylesheet for the window
-        self.setStyleSheet("background-color: black; font-family: Times New Roman;")
+        self.setStyleSheet("background-color: royalblue; font-family: Times New Roman;")
         
         # calling an initalizer function to add objects to the form
         self.initUI()
@@ -166,14 +166,25 @@ class MainWindow(QMainWindow):
         
         # ------------------------------------- Searching functionality -------------------------------------
 
-        search_column_sort_label = QLabel("Search: ") # label text for the sort
+        search_column_sort_label = QLabel("Filter by: ") # label text for the sort
         search_column_sort_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding a stylesheet for the label
+        search_column_sort_label.setFixedWidth(60) # fixing the width
+        search_column_input1 = QLineEdit() # adding a text input in UI for search column 1
+        search_column_input1.setPlaceholderText("Query column 1: ") # setting up a place holder for user guidance
+        search_column_input1.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
+        search_column_input1.setMinimumWidth(100) # setting the minimum width of the product name field
         search_column_sort_combobox1 = QComboBox() # adding a combobox to select column 1
-        search_column_sort_combobox1.setStyleSheet(common_stylesheet+"lightgrey;") # adding the stylesheet
+        search_column_sort_combobox1.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
         search_column_sort_combobox1.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        search_column_sort_combobox1.setMinimumWidth(100) # setting the minimum width of the product name field
+        search_column_input2 = QLineEdit() # adding a text input in UI for search column 2
+        search_column_input2.setPlaceholderText("Query column 2: ") # setting up a place holder for user guidance
+        search_column_input2.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
+        search_column_input2.setMinimumWidth(100) # setting the minimum width of the product name field
         search_column_sort_combobox2 = QComboBox() # adding a combobox to select column 2
-        search_column_sort_combobox2.setStyleSheet(common_stylesheet+"lightgrey;") # adding the stylesheet
+        search_column_sort_combobox2.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
         search_column_sort_combobox2.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        search_column_sort_combobox2.setMinimumWidth(100) # setting the minimum width of the product name field
         search_column_sort_btn = QPushButton("Search") # adding a button for single sort triggering
         search_column_sort_btn.setStyleSheet(common_stylesheet+" lightgrey;") # adding style to button
         
@@ -181,7 +192,9 @@ class MainWindow(QMainWindow):
         search_column_sort_container = QHBoxLayout()
         search_column_sort_container.addWidget(search_column_sort_label)
         search_column_sort_container.addWidget(search_column_sort_combobox1)
+        search_column_sort_container.addWidget(search_column_input1)
         search_column_sort_container.addWidget(search_column_sort_combobox2)
+        search_column_sort_container.addWidget(search_column_input2)
         search_column_sort_container.addWidget(search_column_sort_btn)
 
         # ------------------------------------- Adding layouts to main layout -------------------------------------
