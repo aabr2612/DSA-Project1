@@ -33,10 +33,10 @@ class MainWindow(QMainWindow):
     # ------------------------------------- UI function -------------------------------------
     def initUI(self):
         
-        single_sort_time=0 # variable to store single sort time
-        multiple_sort_time=0 # varibale to store multi column sort time
-        progress=0 # variable to save the progress
-        headers = ["A","B","C","D","E","F","G"]
+        self.single_sort_time=0 # variable to store single sort time
+        self.multiple_sort_time=0 # varibale to store multi column sort time
+        self.progress=0 # variable to save the progress
+        self.headers = ["A","B","C","D","E","F","G"]
         
         # ------------------------------------- Basic setup -------------------------------------
         
@@ -56,10 +56,10 @@ class MainWindow(QMainWindow):
 
         # ------------------------------------- Scraping product name input -------------------------------------
         
-        data_scrap_url = QLineEdit() # adding a text input in UI
-        data_scrap_url.setPlaceholderText("Enter product name to scrap data: ") # setting up a place holder for user guidance
-        data_scrap_url.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
-        data_scrap_url.setMinimumWidth(400) # setting the minimum width of the product name field
+        self.data_scrap_product = QLineEdit() # adding a text input in UI
+        self.data_scrap_product.setPlaceholderText("Enter product name to scrap data: ") # setting up a place holder for user guidance
+        self.data_scrap_product.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
+        self.data_scrap_product.setMinimumWidth(400) # setting the minimum width of the product name field
         
         # ------------------------------------- Scraping buttons layout -------------------------------------
 
@@ -67,117 +67,137 @@ class MainWindow(QMainWindow):
         common_stylesheet = "color:black; font-weight:bold; font-size: 14px; background-color:"
         
         # start button
-        start_scrap_btn = QPushButton("Start")
-        start_scrap_btn.setStyleSheet(common_stylesheet+" green;")
-        # start_scrap_btn.clicked.connect(self.start_scrap_data)
+        self.start_scrap_btn = QPushButton("Start")
+        self.start_scrap_btn.setStyleSheet(common_stylesheet+" green;")
+        # self.start_scrap_btn.clicked.connect(self.time)
         
         # pause button
-        pause_scrap_btn = QPushButton("Pause")
-        pause_scrap_btn.setStyleSheet(common_stylesheet+" yellow;")
+        self.pause_scrap_btn = QPushButton("Pause")
+        self.pause_scrap_btn.setStyleSheet(common_stylesheet+" yellow;")
         # resume_scrap_btn.clicked.connect(self.pause_scrap_data)
 
         # resume button
-        resume_scrap_btn = QPushButton("Resume")
-        resume_scrap_btn.setStyleSheet(common_stylesheet+" blue;")
+        self.resume_scrap_btn = QPushButton("Resume")
+        self.resume_scrap_btn.setStyleSheet(common_stylesheet+" blue;")
         # resume_scrap_btn.clicked.connect(self.resume_scrap_data)
         
         # stop button
-        stop_scrap_btn = QPushButton("Stop")
-        stop_scrap_btn.setStyleSheet(common_stylesheet+" red;")
+        self.stop_scrap_btn = QPushButton("Stop")
+        self.stop_scrap_btn.setStyleSheet(common_stylesheet+" red;")
         # stop_scrap_btn.clicked.connect(self.stop_scrap_data)
         
         # ------------------------------------- Progress bar for scraping task -------------------------------------
         
         scrap_progress = QProgressBar() # a new progress bar object
-        scrap_progress.setValue(progress) # by default value of progress bar
+        scrap_progress.setValue(self.progress) # by default value of progress bar
         scrap_progress.setTextVisible(True) # adding a bool variable to make it visible
         scrap_progress.setStyleSheet("color: white;") # adding style sheet
         
-        # ------------------------------------- Setting up the scraping elements in layout -------------------------------------
+        # ------------------------------------- Button and input for loading data -------------------------------------
+
+        self.file_name_input = QLineEdit() # adding a text input in UI
+        self.file_name_input.setPlaceholderText("Enter file name to load data: ") # setting up a place holder for user guidance
+        self.file_name_input.setStyleSheet("color: black; background-color: white; font-weight: bold; font-size: 14px;") # setting the stylesheet for the product name input
+        self.file_name_input.setMinimumWidth(400) # setting the minimum width of the product name field
+        
+        # start button
+        self.load_from_csv_btn = QPushButton("Load data from CSV")
+        self.load_from_csv_btn.setStyleSheet(common_stylesheet+" lightgrey;")
+        # self.start_scrap_btn.clicked.connect(self.time)
+        
+        
+        # ------------------------------------- Setting up the scraping elements and load data in layout -------------------------------------
         
         scrap_data_container = QVBoxLayout() # a main layout holder for the scraping task UI
         
-        # a container to hold the url input, progress bar and buttons in the window
+        # a container to hold the product input, progress bar and buttons in the window
         scrapping_functionality_container = QHBoxLayout()
-        scrapping_functionality_container.addWidget(data_scrap_url)
-        scrapping_functionality_container.addWidget(start_scrap_btn)
-        scrapping_functionality_container.addWidget(pause_scrap_btn)
-        scrapping_functionality_container.addWidget(resume_scrap_btn)
-        scrapping_functionality_container.addWidget(stop_scrap_btn)
+        scrapping_functionality_container.addWidget(self.data_scrap_product)
+        scrapping_functionality_container.addWidget(self.start_scrap_btn)
+        scrapping_functionality_container.addWidget(self.pause_scrap_btn)
+        scrapping_functionality_container.addWidget(self.resume_scrap_btn)
+        scrapping_functionality_container.addWidget(self.stop_scrap_btn)
+        
+        # a container to hold the input and button
+        
+        load_data_container = QHBoxLayout()
+        load_data_container.addWidget(self.file_name_input)
+        load_data_container.addWidget(self.load_from_csv_btn)
         
         # adding the elements to the main scraping UI container
         
         scrap_data_container.addLayout(scrapping_functionality_container)
         scrap_data_container.addWidget(scrap_progress)
-        
+        scrap_data_container.addLayout(load_data_container)
+
         # ------------------------------------- Adding the data table to the UI -------------------------------------
         
-        data_table = QTableWidget() # a new table layout
-        data_table.setColumnCount(7) # setting the column count for the table
-        data_table.setHorizontalHeaderLabels(headers) # adding the table headers to the table
-        data_table.setStyleSheet("color: black; background-color: lightgray; font-size: 11px;") # adding the stylesheet
+        self.data_table = QTableWidget() # a new table layout
+        self.data_table.setColumnCount(7) # setting the column count for the table
+        self.data_table.setHorizontalHeaderLabels(self.headers) # adding the table headers to the table
+        self.data_table.setStyleSheet("color: black; background-color: lightgray; font-size: 11px;") # adding the stylesheet
         
         # setting the column width to automatically adjust equally
-        table_header = data_table.horizontalHeader()
+        table_header = self.data_table.horizontalHeader()
         table_header.setSectionResizeMode(QHeaderView.Stretch)
         
         # ------------------------------------- Single column sort layout -------------------------------------
 
-        single_column_sort_label = QLabel("Sort data by column: ") # label text for the sort
+        single_column_sort_label = QLabel("Single Column Sort: ") # label text for the sort
         single_column_sort_label.setFixedWidth(130)
         single_column_sort_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding a stylesheet for the label
-        single_column_sort_combobox = QComboBox() # adding a combobox to select a column
-        single_column_sort_combobox.setStyleSheet(common_stylesheet+"white;") # adding stylesheet
-        single_column_sort_combobox.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
-        single_column_sort_btn = QPushButton("Sort") # adding a button for single sort triggering
-        single_column_sort_btn.setStyleSheet(common_stylesheet+" orange;") # adding style to button
-        single_sort_time_label = QLabel("Time taken: "+ str(single_sort_time*100)+" ms") # displaying the sortgng time
+        self.single_column_sort_combobox = QComboBox() # adding a combobox to select a column
+        self.single_column_sort_combobox.setStyleSheet(common_stylesheet+"white;") # adding stylesheet
+        self.single_column_sort_combobox.addItems(self.headers) # adding the headers to the combo box loaded from the headers of the data
+        self.single_column_sort_btn = QPushButton("Sort") # adding a button for single sort triggering
+        self.single_column_sort_btn.setStyleSheet(common_stylesheet+" orange;") # adding style to button
+        single_sort_time_label = QLabel("Time taken: "+ str(self.single_sort_time*100)+" ms") # displaying the sortgng time
         single_sort_time_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding stylesheet
         
         # adding the elements to main single column sorting layout container
         single_column_sort_container = QHBoxLayout()
         single_column_sort_container.addWidget(single_column_sort_label)
-        single_column_sort_container.addWidget(single_column_sort_combobox)
-        single_column_sort_container.addWidget(single_column_sort_btn)
+        single_column_sort_container.addWidget(self.single_column_sort_combobox)
+        single_column_sort_container.addWidget(self.single_column_sort_btn)
         single_column_sort_container.addWidget(single_sort_time_label)
         
         # ------------------------------------- Multiple column sort layout -------------------------------------
 
         # label
-        multiple_column_sort_label = QLabel("Multiple sort (Select Column1 and Column2): ") # label text for the sort
-        multiple_column_sort_label.setFixedWidth(285) # setting the fixed width
+        multiple_column_sort_label = QLabel("Multiple Columns Sort: ") # label text for the sort
+        multiple_column_sort_label.setFixedWidth(150) # setting the fixed width
         multiple_column_sort_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding a stylesheet for the label
         
         # comboboxes for column selection
-        multiple_column_sort_combobox1 = QComboBox() # adding a combobox to select column 1
-        multiple_column_sort_combobox1.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
-        multiple_column_sort_combobox1.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
-        multiple_column_sort_combobox2 = QComboBox() # adding a combobox to select column 2
-        multiple_column_sort_combobox2.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
-        multiple_column_sort_combobox2.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        self.multiple_column_sort_combobox1 = QComboBox() # adding a combobox to select column 1
+        self.multiple_column_sort_combobox1.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
+        self.multiple_column_sort_combobox1.addItems(self.headers) # adding the headers to the combo box loaded from the headers of the data
+        self.multiple_column_sort_combobox2 = QComboBox() # adding a combobox to select column 2
+        self.multiple_column_sort_combobox2.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
+        self.multiple_column_sort_combobox2.addItems(self.headers) # adding the headers to the combo box loaded from the headers of the data
         
         # button
-        multiple_column_sort_btn = QPushButton("Multi-Column Sort") # adding a button for single sort triggering
-        multiple_column_sort_btn.setStyleSheet(common_stylesheet+" orange;") # adding style to button
+        self.multiple_column_sort_btn = QPushButton("Multi-Column Sort") # adding a button for single sort triggering
+        self.multiple_column_sort_btn.setStyleSheet(common_stylesheet+" orange;") # adding style to button
         
         # time display label
-        multiple_sort_time_label = QLabel("Time taken: "+ str(multiple_sort_time*100)+" ms") # displaying the time taken to implement the multi level sorting
+        multiple_sort_time_label = QLabel("Time taken: "+ str(self.multiple_sort_time*100)+" ms") # displaying the time taken to implement the multi level sorting
         multiple_sort_time_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding stylesheet for the time label
         
         # adding the elements to main multi column sorting layout container
         multiple_column_sort_container = QHBoxLayout()
         multiple_column_sort_container.addWidget(multiple_column_sort_label)
-        multiple_column_sort_container.addWidget(multiple_column_sort_combobox1)
-        multiple_column_sort_container.addWidget(multiple_column_sort_combobox2)
-        multiple_column_sort_container.addWidget(multiple_column_sort_btn)
+        multiple_column_sort_container.addWidget(self.multiple_column_sort_combobox1)
+        multiple_column_sort_container.addWidget(self.multiple_column_sort_combobox2)
+        multiple_column_sort_container.addWidget(self.multiple_column_sort_btn)
         multiple_column_sort_container.addWidget(multiple_sort_time_label)
         
         # ------------------------------------- Searching functionality -------------------------------------
 
         # label
-        search_column_sort_label = QLabel("Filter by: ") # label text for the sort
+        search_column_sort_label = QLabel("Apply searching filter: ") # label text for the sort
         search_column_sort_label.setStyleSheet(common_stylesheet+"lightgrey;") # adding a stylesheet for the label
-        search_column_sort_label.setFixedWidth(60) # fixing the width
+        search_column_sort_label.setFixedWidth(150) # fixing the width
         
         # input 1 and combobox 1
         self.search_column_input1 = QLineEdit() # adding a text input in UI for search column 1
@@ -186,7 +206,7 @@ class MainWindow(QMainWindow):
         self.search_column_input1.setMinimumWidth(100) # setting the minimum width of the product name field
         self.search_column_sort_combobox1 = QComboBox() # adding a combobox to select column 1
         self.search_column_sort_combobox1.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
-        self.search_column_sort_combobox1.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        self.search_column_sort_combobox1.addItems(self.headers) # adding the headers to the combo box loaded from the headers of the data
         self.search_column_sort_combobox1.setMinimumWidth(100) # setting the minimum width of the product name field
         
         # input 2 and combobox 2
@@ -196,12 +216,8 @@ class MainWindow(QMainWindow):
         self.search_column_input2.setMinimumWidth(100) # setting the minimum width of the product name field
         self.search_column_sort_combobox2 = QComboBox() # adding a combobox to select column 2
         self.search_column_sort_combobox2.setStyleSheet(common_stylesheet+"white;") # adding the stylesheet
-        self.search_column_sort_combobox2.addItems(headers) # adding the headers to the combo box loaded from the headers of the data
+        self.search_column_sort_combobox2.addItems(self.headers) # adding the headers to the combo box loaded from the headers of the data
         self.search_column_sort_combobox2.setMinimumWidth(100) # setting the minimum width of the product name field
-        
-        # push button
-        self.search_column_sort_btn = QPushButton("Search") # adding a button for single sort triggering
-        self.search_column_sort_btn.setStyleSheet(common_stylesheet+" lightgrey;") # adding style to button
         
         # adding the objects to search container 1
         search_column_sort_container1=QHBoxLayout()
@@ -210,24 +226,43 @@ class MainWindow(QMainWindow):
         search_column_sort_container1.addWidget(self.search_column_input1)
         search_column_sort_container1.addWidget(self.search_column_sort_combobox2)
         search_column_sort_container1.addWidget(self.search_column_input2)
-        search_column_sort_container1.addWidget(self.search_column_sort_btn)
         
         # ------------------------------------- Filter functionality -------------------------------------
 
         # combo box
-        filter_combobox = QComboBox() # adding a combobox to apply filters
-        filter_combobox.addItems(["Contains","Ends with","Starts with"]) # filter content
+        self.filter_combobox = QComboBox() # adding a combobox to apply filters
+        self.filter_combobox.addItems(["Contains","Ends with","Starts with"]) # filter content
+        
+        self.and_checkbox = QCheckBox("AND operation")
+        self.and_checkbox.setStyleSheet(common_stylesheet+"lightgrey;")
+        self.or_checkbox = QCheckBox("OR operation")
+        self.or_checkbox.setStyleSheet(common_stylesheet+"lightgrey;")
+        self.not_checkbox = QCheckBox("NOT operations")
+        self.not_checkbox.setStyleSheet(common_stylesheet+"lightgrey;")
+        
+        # push button
+        self.search_column_sort_btn = QPushButton("Search") # adding a button for single sort triggering
+        self.search_column_sort_btn.setStyleSheet(common_stylesheet+" lightgrey;") # adding style to button
+        
+        # adding the objects to search container 1
+        search_column_sort_container2=QHBoxLayout()
+        search_column_sort_container2.addWidget(self.filter_combobox)
+        search_column_sort_container2.addWidget(self.and_checkbox)
+        search_column_sort_container2.addWidget(self.or_checkbox)
+        search_column_sort_container2.addWidget(self.not_checkbox)
+        search_column_sort_container2.addWidget(self.search_column_sort_btn)
+        
         
         # searching functionality container
         search_column_sort_container = QVBoxLayout()
-        
         search_column_sort_container.addLayout(search_column_sort_container1)
+        search_column_sort_container.addLayout(search_column_sort_container2)
 
         # ------------------------------------- Adding layouts to main layout -------------------------------------
         
         main_layout.addLayout(title_container)
         main_layout.addLayout(scrap_data_container)
-        main_layout.addWidget(data_table)
+        main_layout.addWidget(self.data_table)
         main_layout.addLayout(single_column_sort_container)
         main_layout.addLayout(multiple_column_sort_container)
         main_layout.addLayout(search_column_sort_container)
