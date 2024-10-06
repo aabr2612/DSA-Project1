@@ -11,7 +11,8 @@ import pandas as pd
 
 # Set up Chrome WebDriver
 
-service = Service("D:/software/chromedriver-win64/chromedriver.exe")
+service = Service("C:/Program Files (x86)/chromedriver-win64/chromedriver.exe")
+# service = Service("D:/software/chromedriver-win64/chromedriver.exe")
 chrome_options = Options()
 chrome_options.add_argument("--ignore-certificate-errors")
 chrome_options.add_argument("--ignore-ssl-errors")
@@ -166,7 +167,7 @@ def scrape_products():
         })
 
         # Check if the CSV file exists
-        file_path = f".\Data\{ProductNameToBeSearched}.csv"
+        file_path = f"./backend/Data/{ProductNameToBeSearched}.csv"
 
 
         if os.path.exists(file_path):
