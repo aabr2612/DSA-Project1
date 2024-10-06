@@ -270,18 +270,33 @@ class MainWindow(QMainWindow):
 
     def load_data_from_csv(self):
         try:
-            if(self.file_name_input.text()!=""):
-                file_name = self.file_name_input.text()
-                data = ut.load_data(f"{file_name}"+".csv")
-                self.headers = data.columns
-                self.data_table.setColumnCount(len(self.headers))
-                self.data_table.setHorizontalHeaderLabels(self.headers)
-                self.data_table.setRowCount(len(data))
-                for i in range(len(data)):
-                    for j in range(len(data[i])):
-                        self.data_table.setItem(i,j,QTableWidgetItem(str(data[i][j])))
-            else:
-                print("Please enter the file name")
-        except Exception as e:
-            print("Error occurred: ",e)
+            if self.file_name_input.text() != "":
+                file_name = self.file_name_input.text() + ".csv"
+                data = ut.load_data(file_name)
             
+                if data is not None:
+                    self.headers = list(data.columns)
+                    self.data_table.setColumnCount(len(self.headers))
+                    self.single_column_sort_combobox.clear()
+                    self.multiple_column_sort_combobox1.clear()
+                    self.multiple_column_sort_combobox2.clear()
+                    self.search_column_sort_combobox1.clear()
+                    self.search_column_sort_combobox2.clear()
+                    self.single_column_sort_combobox.addItems(self.headers)
+                    self.multiple_column_sort_combobox1.addItems(self.headers)
+                    self.multiple_column_sort_combobox2.addItems(self.headers)
+                    self.search_column_sort_combobox1.addItems(self.headers)
+                    self.search_column_sort_combobox2.addItems(self.headers)
+
+                    self.data_table.setHorizontalHeaderLabels(self.headers)
+                    self.data_table.setRowCount(len(data))
+                    
+                    for i in range(len(data)):
+                        for j in range(len(data.columns)):
+                            self.data_table.setItem(i, j, QTableWidgetItem(str(data.iat[i, j])))
+                else:
+                    print("No data loaded.")
+            else:
+                print("Please enter the file name.")
+        except Exception as e:
+            print("Error occurred: ", e)
