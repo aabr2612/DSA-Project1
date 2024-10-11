@@ -1,226 +1,246 @@
 import pandas as pd
 
-# bubble sort
 def bubbleSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    for i in range(len(data) - 1):
-        isSwapped = False
-        
-        for j in range(len(data) - i - 1):
-            if data[column].iloc[j] > data[column].iloc[j + 1]:
-                data.iloc[[j, j + 1]] = data.iloc[[j + 1, j]]
-                isSwapped = True
-        if not isSwapped:
-            break
-        
-    return data
-
-# selection sort
-def selectionSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    for i in range(len(data) - 1): 
-        minIdx = i
-        
-        for j in range(i + 1, len(data)):
-            if data[column].iloc[minIdx] > data[column].iloc[j]:
-                minIdx = j
-                
-        if minIdx != i:
-            data.iloc[[i, minIdx]] = data.iloc[[minIdx, i]]
-        
-    return data
-
-# insertion sort
-def insertionSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    for i in range(1, len(data)):
-        key_row = data.iloc[i].copy()
-        j = i - 1
-        
-        while j >= 0 and key_row[column] < data.iloc[j][column]:  
-            data.iloc[j + 1] = data.iloc[j]
-            j = j - 1
+    try:
+        for i in range(len(data) - 1):
+            isSwapped = False
             
-        data.iloc[j + 1] = key_row
-        
-    return data
-
-# merge sort
-def mergeSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    if len(data) <= 1:
+            for j in range(len(data) - i - 1):
+                if data[column].iloc[j] > data[column].iloc[j + 1]:
+                    data.iloc[[j, j + 1]] = data.iloc[[j + 1, j]]
+                    isSwapped = True
+            if not isSwapped:
+                break
+        return data
+    except Exception as e:
+        print(f"Error in bubbleSort: {e}")
         return data
 
-    mid = len(data) // 2
-    left_half_df = mergeSort(data.iloc[:mid], column)
-    right_half_df = mergeSort(data.iloc[mid:], column)
+def selectionSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        for i in range(len(data) - 1): 
+            minIdx = i
+            
+            for j in range(i + 1, len(data)):
+                if data[column].iloc[minIdx] > data[column].iloc[j]:
+                    minIdx = j
+                    
+            if minIdx != i:
+                data.iloc[[i, minIdx]] = data.iloc[[minIdx, i]]
+        return data
+    except Exception as e:
+        print(f"Error in selectionSort: {e}")
+        return data
 
-    return merge(left_half_df, right_half_df, column)
+def insertionSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        for i in range(1, len(data)):
+            key_row = data.iloc[i].copy()
+            j = i - 1
+            
+            while j >= 0 and key_row[column] < data.iloc[j][column]:  
+                data.iloc[j + 1] = data.iloc[j]
+                j = j - 1
+                
+            data.iloc[j + 1] = key_row
+        return data
+    except Exception as e:
+        print(f"Error in insertionSort: {e}")
+        return data
+
+def mergeSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        if len(data) <= 1:
+            return data
+
+        mid = len(data) // 2
+        left_half_df = mergeSort(data.iloc[:mid], column)
+        right_half_df = mergeSort(data.iloc[mid:], column)
+
+        return merge(left_half_df, right_half_df, column)
+    except Exception as e:
+        print(f"Error in mergeSort: {e}")
+        return data
 
 def merge(left, right, column_name):
-    sorted_data = pd.DataFrame(columns=left.columns)
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[column_name].iloc[i] <= right[column_name].iloc[j]:
+    try:
+        sorted_data = pd.DataFrame(columns=left.columns)
+        i = j = 0
+        while i < len(left) and j < len(right):
+            if left[column_name].iloc[i] <= right[column_name].iloc[j]:
+                sorted_data = pd.concat([sorted_data, left.iloc[[i]]], ignore_index=True)
+                i += 1
+            else:
+                sorted_data = pd.concat([sorted_data, right.iloc[[j]]], ignore_index=True)
+                j += 1
+
+        while i < len(left):
             sorted_data = pd.concat([sorted_data, left.iloc[[i]]], ignore_index=True)
             i += 1
-        else:
+
+        while j < len(right):
             sorted_data = pd.concat([sorted_data, right.iloc[[j]]], ignore_index=True)
             j += 1
 
-    while i < len(left):
-        sorted_data = pd.concat([sorted_data, left.iloc[[i]]], ignore_index=True)
-        i += 1
+        return sorted_data
+    except Exception as e:
+        print(f"Error in merge: {e}")
+        return left.append(right).reset_index(drop=True)
 
-    while j < len(right):
-        sorted_data = pd.concat([sorted_data, right.iloc[[j]]], ignore_index=True)
-        j += 1
-
-    return sorted_data
-
-# quick sort
 def quickSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    if len(data) <= 1:
+    try:
+        if len(data) <= 1:
+            return data
+        
+        pivot = data[column].iloc[len(data) // 2]
+        left = data[data[column] < pivot]
+        middle = data[data[column] == pivot]
+        right = data[data[column] > pivot]
+
+        return pd.concat([quickSort(left, column), middle, quickSort(right, column)], ignore_index=True)
+    except Exception as e:
+        print(f"Error in quickSort: {e}")
         return data
-    
-    pivot = data[column].iloc[len(data) // 2]
-    left = data[data[column] < pivot]
-    middle = data[data[column] == pivot]
-    right = data[data[column] > pivot]
 
-    return pd.concat([quickSort(left, column), middle, quickSort(right, column)], ignore_index=True)
-
-# counting sort
-def countingSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    max_value = int(data[column].max())
-    count = [0] * (max_value + 1)
-    
-    for value in data[column]:
-        count[value] += 1
-    sorted_index = 0
-    
-    for value in range(max_value + 1):
-        while count[value] > 0:
-            rows = data[data[column] == value]
-            data.iloc[sorted_index:sorted_index + len(rows)] = rows.values
-            sorted_index += len(rows)
-            count[value] -= 1
-    
-    return data
-
-# radix sort
-def counting_sort_radix(data: pd.DataFrame, column: str, exp) -> pd.DataFrame:
-    n = len(data)
-    output = pd.DataFrame(columns=data.columns, index=range(n))
-    count = [0] * 10
-    
-    for i in range(n):
-        index = data[column].iloc[i] // exp
-        count[index % 10] += 1
-
-    for i in range(1, 10):
-        count[i] += count[i - 1]
-
-    for i in range(n - 1, -1, -1):
-        index = data[column].iloc[i] // exp
-        output.iloc[count[index % 10] - 1] = data.iloc[i]
-        count[index % 10] -= 1
-
-    return output
-
-def radixSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    if column not in data.columns or not pd.api.types.is_numeric_dtype(data[column]):
-        return
-
-    max_value = int(data[column].max())
-
-    exp = 1
-    while max_value // exp > 0:
-        data = counting_sort_radix(data, column, exp)
-        exp *= 10
-
-    return data
-
-# bucket sort
-def bucketSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    if column not in data.columns or not pd.api.types.is_numeric_dtype(data[column]):
-        return 
-
-    max_value = int(data[column].max())
-    min_value = int(data[column].min())
-    bucket_range = max_value - min_value + 1
-    bucket_count = bucket_range // 10 + 1
-    buckets = [[] for _ in range(bucket_count)]
-
-    for idx, value in data[column].iteritems():
-        bucket_index = (value - min_value) // 10
-        buckets[bucket_index].append(data.iloc[idx])
-
-    sorted_index = 0
-    
-    for bucket in buckets:
-        if bucket:
-            bucket_df = pd.DataFrame(bucket)
-            bucket_df = bucket_df.sort_values(by=column)
-            data.iloc[sorted_index:sorted_index + len(bucket_df)] = bucket_df.values
-            sorted_index += len(bucket_df)
-                
-    return data
-
-# gnome sort
-def gnomeSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    index = 0
-    n = len(data)
-
-    while index < n:
-        if index > 0 and data[column].iloc[index] < data[column].iloc[index - 1]:
-            data.iloc[[index, index - 1]] = data.iloc[[index - 1, index]]
-            index -= 1
-        else:
-            index += 1
-
-    return data.reset_index(drop=True)
-
-# heap sort
 def heapify(data: pd.DataFrame, n: int, i: int, column: str):
-    largest = i
-    left = 2 * i + 1
-    right = 2 * i + 2
+    try:
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
 
-    if left < n and data[column].iloc[left] > data[column].iloc[largest]:
-        largest = left
+        if left < n and data[column].iloc[left] > data[column].iloc[largest]:
+            largest = left
 
-    if right < n and data[column].iloc[right] > data[column].iloc[largest]:
-        largest = right
+        if right < n and data[column].iloc[right] > data[column].iloc[largest]:
+            largest = right
 
-    if largest != i:
-        data.iloc[[i, largest]] = data.iloc[[largest, i]]
-        heapify(data, n, largest, column)
+        if largest != i:
+            data.iloc[[i, largest]] = data.iloc[[largest, i]]
+            heapify(data, n, largest, column)
+    except Exception as e:
+        print(f"Error in heapify: {e}")
 
 def heapSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    n = len(data)
+    try:
+        n = len(data)
 
-    for i in range(n // 2 - 1, -1, -1):
-        heapify(data, n, i, column)
+        for i in range(n // 2 - 1, -1, -1):
+            heapify(data, n, i, column)
 
-    for i in range(n - 1, 0, -1):
-        data.iloc[[i, 0]] = data.iloc[[0, i]]
-        heapify(data, i, 0, column)
+        for i in range(n - 1, 0, -1):
+            data.iloc[[i, 0]] = data.iloc[[0, i]]
+            heapify(data, i, 0, column)
 
-    return data.reset_index(drop=True)
+        return data.reset_index(drop=True)
+    except Exception as e:
+        print(f"Error in heapSort: {e}")
+        return data
+    
+def gnomeSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        index = 0
+        n = len(data)
 
-# even-odd sort
-def evenOddSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
-    n = len(data)
-    sorted = False
+        while index < n:
+            if index > 0 and data[column].iloc[index] < data[column].iloc[index - 1]:
+                data.iloc[[index, index - 1]] = data.iloc[[index - 1, index]]
+                index -= 1
+            else:
+                index += 1
 
-    while not sorted:
-        sorted = True
+        return data.reset_index(drop=True)
+    except Exception as e:
+        print(f"Error in gnomeSort: {e}")
+        return data
 
-        for i in range(1, n, 2):
-            if data[column].iloc[i] < data[column].iloc[i - 1]:
-                data.iloc[[i, i - 1]] = data.iloc[[i - 1, i]]
-                sorted = False
+def countingSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        if column not in data.columns:
+            raise ValueError(f"Column '{column}' does not exist in the DataFrame.")
+        
+        if not pd.api.types.is_integer_dtype(data[column]):
+            raise TypeError(f"Column '{column}' must be of integer type.")
+        
+        max_value = data[column].max()
+        count = [0] * (max_value + 1)
 
-        for i in range(0, n - 1, 2):
-            if data[column].iloc[i] > data[column].iloc[i + 1]:
-                data.iloc[[i, i + 1]] = data.iloc[[i + 1, i]]
-                sorted = False
+        for value in data[column]:
+            count[value] += 1
 
-    return data
+        for i in range(1, len(count)):
+            count[i] += count[i - 1]
+
+        sorted_data = pd.DataFrame(index=data.index, columns=data.columns)
+
+        for i in range(len(data) - 1, -1, -1):
+            value = data[column].iloc[i]
+            sorted_index = count[value] - 1
+            sorted_data.iloc[sorted_index] = data.iloc[i]
+            count[value] -= 1
+
+        for col in data.columns:
+            sorted_data[col] = sorted_data[col].astype(data[col].dtype)
+
+        return sorted_data
+
+    except Exception as e:
+        raise e
+
+def radixSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        max_value = data[column].max()
+
+        exp = 1
+        while max_value // exp > 0:
+            data = countingSort(data, column)
+            exp *= 10
+        return data
+    except Exception as e:
+        print(f"Error in radixSort: {e}")
+        return data
+
+
+def oddEvenSort(data: pd.DataFrame, column: str) -> pd.DataFrame:
+    try:
+        n = len(data)
+        isSorted = False
+        
+        while not isSorted:
+            isSorted = True
+
+            for i in range(1, n, 2):
+                if data[column].iloc[i] > data[column].iloc[i + 1]:
+                    data.iloc[[i, i + 1]] = data.iloc[[i + 1, i]]
+                    isSorted = False
+            
+            for i in range(0, n - 1, 2):
+                if data[column].iloc[i] > data[column].iloc[i + 1]:
+                    data.iloc[[i, i + 1]] = data.iloc[[i + 1, i]]
+                    isSorted = False
+        
+        return data
+    except Exception as e:
+        print(f"Error in oddEvenSort: {e}")
+        return data
+
+def bucketSort(data: pd.DataFrame, column: str, bucket_size=10) -> pd.DataFrame:
+    try:
+        max_value = data[column].max()
+        min_value = data[column].min()
+        bucket_count = (max_value - min_value) // bucket_size + 1
+        buckets = [[] for _ in range(bucket_count)]
+
+        for index, row in data.iterrows():
+            bucket_index = (row[column] - min_value) // bucket_size
+            buckets[bucket_index].append(row)
+
+        sorted_data = pd.DataFrame(columns=data.columns)
+        for bucket in buckets:
+            sorted_data = pd.concat([sorted_data, pd.DataFrame(bucket).sort_values(by=column)], ignore_index=True)
+
+        for col in data.columns:
+            sorted_data[col] = sorted_data[col].astype(data[col].dtype)
+        return sorted_data
+    except Exception as e:
+        print(f"Error in bucketSort: {e}")
+        return data

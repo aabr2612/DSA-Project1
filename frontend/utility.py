@@ -6,6 +6,6 @@ def load_data(file_name):
         file_path = os.path.join(os.path.dirname(__file__), '../backend/data', file_name)
         data = pd.read_csv(file_path)
         return data
-    except Exception as e:
-        print(f"Error loading file: {e}")
-        return None
+    except Exception as ex:
+        raise ex
+    
