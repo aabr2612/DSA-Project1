@@ -120,4 +120,4 @@ Before running the project, ensure you have the following installed on your syst
 
 ## Conclusion
 
-This project integrates web scraping, data handling, and sorting algorithms through a simple GUI, providing hands-on experience with these concepts and algorithms. It serves as a valuable educational tool for learning data processing and algorithm implementation.
+This project integrates web scraping, data handling, and sorting algorithms through a simple GUI, providing hands-on experience with these concepts and algorithms. It serves as a valuable educational tool for learning data processing and algorithm implementation. 
