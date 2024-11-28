@@ -1,7 +1,7 @@
 
 # DSA Project 1
 
-This is my pre-mid Data Structures and Algorithms (DSA) project, implemented in Python. It demonstrates the use of various sorting algorithms, searching techniques, and web scraping functionalities through a PyQt5-based GUI.
+This is my pre-mid Data Structures and Algorithms (DSA) project, implemented in Python. It demonstrates the use of various sorting algorithms, linear searching, and web scraping functionalities through a PyQt5-based GUI.
 
 ## Features
 
