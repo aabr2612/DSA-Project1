@@ -51,7 +51,7 @@ Sorting features include:
 Project Directory
 │
 ├── backend
-│   ├── data                  # Stores scraped or sample CSV files
+│   ├── data                  # Stores scraped data CSV files
 │   ├── sorting
 │   │   ├── sorting_algorithms.py # Sorting algorithms implementations
 │   └── scrap.py              # Web scraping logic
