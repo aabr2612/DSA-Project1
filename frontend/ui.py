@@ -245,7 +245,7 @@ class MainWindow(QMainWindow):
         try:
             if self.data_scrap_product.text()!="":
                 product_name=self.data_scrap_product.text()
-                self.scraper_thread = ScraperThread(product_name=product_name, total_pages=2)
+                self.scraper_thread = ScraperThread(product_name=product_name, total_pages=30)
                 self.scraper_thread.progress_signal.connect(self.update_progress)
                 self.scraper_thread.start()
                 self.start_scrap_btn.setEnabled(False)

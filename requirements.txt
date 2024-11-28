@@ -1,0 +1,4 @@
+PyQt5==5.15.9
+selenium==4.12.0
+beautifulsoup4==4.12.2
+pandas==2.1.3
